@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -24,8 +23,24 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                bat 'echo Deploy Successful'
+                bat '''
+                taskkill /F /IM python.exe >nul 2>&1
+
+                start /B "" "C:\\Users\\pk599\\AppData\\Local\\Programs\\Python\\Python313\\python.exe" app.py
+
+                echo Flask Application Started
+                '''
             }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline completed successfully'
+        }
+
+        failure {
+            echo 'Pipeline failed'
         }
     }
 }
